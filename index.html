@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Peça sua Música</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 2rem 1rem;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f1f1f1;
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+
+    label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+
+    input[type="text"] {
+      width: 90%;
+      max-width: 400px;
+      padding: 12px;
+      font-size: 1rem;
+      margin-top: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    button {
+      margin-top: 2rem;
+      padding: 14px 24px;
+      font-size: 1rem;
+      background-color: #25d366;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    button:hover {
+      background-color: #1ebc5a;
+    }
+
+    #mensagem {
+      margin-top: 1.5rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h2>Peça sua música!</h2>
+
+  <label for="nome">Seu nome:</label>
+  <input type="text" id="nome" placeholder="Digite seu nome" />
+
+  <label for="link">Link da música (YouTube):</label>
+  <input type="text" id="link" placeholder="https://youtube.com/..." />
+
+  <button onclick="enviarPedido()">Enviar para o DJ</button>
+
+  <div id="mensagem"></div>
+
+  <script>
+    function validarLink(link) {
+      const padrao = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\//i;
+      return padrao.test(link);
+    }
+
+    async function enviarPedido() {
+      const nome = document.getElementById("nome").value.trim();
+      const link = document.getElementById("link").value.trim();
+      const mensagemDiv = document.getElementById("mensagem");
+      mensagemDiv.textContent = "";
+
+      if (!nome || !link) {
+        mensagemDiv.textContent = "Preencha todos os campos.";
+        mensagemDiv.style.color = "red";
+        return;
+      }
+
+      const dados = { nome, link };
+
+      try {
+        const resposta = await fetch("https://servidorbackend-1.onrender.com/pedido", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(dados)
+        });
+
+        const json = await resposta.json();
+
+        if (resposta.ok) {
+          mensagemDiv.textContent = "Pedido enviado com sucesso!";
+          mensagemDiv.style.color = "green";
+          document.getElementById("nome").value = "";
+          document.getElementById("link").value = "";
+        } else {
+          mensagemDiv.textContent = json.mensagem || "Erro ao enviar pedido.";
+          mensagemDiv.style.color = "red";
+        }
+      } catch (erro) {
+        mensagemDiv.textContent = "Não foi possível conectar com o servidor.";
+        mensagemDiv.style.color = "red";
+      }
+    }
+  </script>
+</body>
+</html>
