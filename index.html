@@ -35,8 +35,8 @@
     }
 
     button {
-      margin-top: 2rem;
-      padding: 14px 24px;
+      margin-top: 1rem;
+      padding: 10px 20px;
       font-size: 1rem;
       background-color: #25d366;
       color: white;
@@ -54,6 +54,40 @@
       margin-top: 1.5rem;
       font-weight: bold;
     }
+
+    #resultados {
+      margin-top: 1rem;
+      text-align: left;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .resultado {
+      background: #fff;
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+
+    .titulo {
+      font-weight: bold;
+    }
+
+    .copiar {
+      margin-top: 5px;
+      padding: 5px 10px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .copiar:hover {
+      background-color: #0056b3;
+    }
   </style>
 </head>
 <body>
@@ -61,6 +95,12 @@
 
   <label for="nome">Seu nome:</label>
   <input type="text" id="nome" placeholder="Digite seu nome" />
+
+  <label for="busca">Buscar música no YouTube:</label>
+  <input type="text" id="busca" placeholder="Digite o nome da música" />
+  <button onclick="buscarYoutube()">Buscar</button>
+
+  <div id="resultados"></div>
 
   <label for="link">Link da música (YouTube):</label>
   <input type="text" id="link" placeholder="https://youtube.com/..." />
@@ -70,9 +110,62 @@
   <div id="mensagem"></div>
 
   <script>
+    const apiKey = "AIzaSyDa-i6Ztzb18TQer2Km29t2JKOTXd89t2g";
+
     function validarLink(link) {
       const padrao = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\//i;
       return padrao.test(link);
+    }
+
+    async function buscarYoutube() {
+      const termo = document.getElementById("busca").value.trim();
+      const resultadosDiv = document.getElementById("resultados");
+      resultadosDiv.innerHTML = "";
+
+      if (!termo) {
+        resultadosDiv.innerHTML = "<p>Digite algo para buscar.</p>";
+        return;
+      }
+
+      const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=5&q=${encodeURIComponent(termo)}&key=${apiKey}`;
+
+      try {
+        const resposta = await fetch(url);
+        const dados = await resposta.json();
+
+        if (dados.items.length === 0) {
+          resultadosDiv.innerHTML = "<p>Nenhum resultado encontrado.</p>";
+          return;
+        }
+
+        dados.items.forEach(video => {
+          const videoId = video.id.videoId;
+          const titulo = video.snippet.title;
+          const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
+
+          const container = document.createElement("div");
+          container.className = "resultado";
+
+          const tituloElem = document.createElement("div");
+          tituloElem.className = "titulo";
+          tituloElem.textContent = titulo;
+
+          const botao = document.createElement("button");
+          botao.className = "copiar";
+          botao.textContent = "Copiar Link";
+          botao.onclick = () => {
+            document.getElementById("link").value = videoUrl;
+            document.getElementById("mensagem").textContent = "Link copiado!";
+            document.getElementById("mensagem").style.color = "green";
+          };
+
+          container.appendChild(tituloElem);
+          container.appendChild(botao);
+          resultadosDiv.appendChild(container);
+        });
+      } catch (erro) {
+        resultadosDiv.innerHTML = "<p>Erro ao buscar vídeos. Verifique sua conexão.</p>";
+      }
     }
 
     async function enviarPedido() {
@@ -103,6 +196,8 @@
           mensagemDiv.style.color = "green";
           document.getElementById("nome").value = "";
           document.getElementById("link").value = "";
+          document.getElementById("busca").value = "";
+          document.getElementById("resultados").innerHTML = "";
         } else {
           mensagemDiv.textContent = json.mensagem || "Erro ao enviar pedido.";
           mensagemDiv.style.color = "red";
@@ -115,3 +210,4 @@
   </script>
 </body>
 </html>
+
