@@ -11,6 +11,12 @@
       font-family: Arial, sans-serif;
       text-align: center;
       background-color: #f1f1f1;
+      position: relative;
+      overflow-x: hidden;
+    }
+    h2, label, input, button, #mensagem, #resultados, #pix-area {
+      position: relative;
+      z-index: 2;
     }
     h2 { font-size: 1.8rem; margin-bottom: 1rem; }
     label { display: block; margin-top: 1rem; font-weight: bold; }
@@ -93,15 +99,24 @@
     }
     .btn-copiar:hover { background: #0056b3; }
 
+    /* Logo de fundo */
     #imagem-dj {
-      position: absolute; bottom: -7%; left: 50%; transform: translateX(-50%);
-      opacity: 0.2; max-width: 300px; width: 50%; z-index: 0;
+      position: fixed;
+      bottom: -5%;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0.12;
+      max-width: 500px;
+      width: 70%;
+      z-index: 0;
+      pointer-events: none;
     }
 
     @media (max-width: 600px) {
       h2 { font-size: 1.5rem; }
       #qrcode { width: 180px; height: 180px; }
       textarea { height: 100px; font-size: 0.85rem; }
+      #imagem-dj { max-width: 300px; width: 80%; opacity: 0.15; }
     }
   </style>
 </head>
@@ -126,11 +141,11 @@
 
   <!-- Área PIX -->
   <div id="pix-area">
-    <h3>Considere contribuir com o DJ via PIX 🎵</h3>
+    <h3>Contribua com o DJ via PIX 🎵</h3>
     <div class="pix-container">
       <div class="pix-box">
         <div id="qrcode"></div>
-        <p>Escaneie o QR Code</p>
+        <p>Escaneie o QR Code no app do seu banco</p>
       </div>
       <div class="pix-box">
         <p>Ou copie o código PIX abaixo:</p>
@@ -140,7 +155,8 @@
     </div>
   </div>
 
-  <img src="dj.jpeg" alt="Imagem de DJ" id="imagem-dj" />
+  <!-- Logo decorativa -->
+  <img src="dj.jpeg" alt="Logo DJ" id="imagem-dj" />
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script>
@@ -258,6 +274,7 @@
   </script>
 </body>
 </html>
+
 
 
 
