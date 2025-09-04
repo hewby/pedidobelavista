@@ -7,121 +7,167 @@
   <style>
     body {
       margin: 0;
-      padding: 1.5rem 1rem;
+      padding: 1rem;
       font-family: Arial, sans-serif;
-      text-align: center;
       background-color: #f1f1f1;
-      position: relative;
-      overflow-x: hidden;
+      text-align: center;
     }
-    h2, label, input, button, #mensagem, #resultados, #pix-area {
-      position: relative;
-      z-index: 2;
-    }
-    h2 { font-size: 1.8rem; margin-bottom: 1rem; }
-    label { display: block; margin-top: 1rem; font-weight: bold; }
-    input[type="text"] {
-      width: 90%; max-width: 400px; padding: 12px; font-size: 1rem;
-      margin-top: 0.5rem; border: 1px solid #ccc; border-radius: 8px;
-    }
-    button {
-      margin-top: 1rem; padding: 10px 20px; font-size: 1rem;
-      background-color: #25d366; color: white; border: none;
-      border-radius: 8px; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-    }
-    button:hover { background-color: #1ebc5a; }
-    #mensagem { margin-top: 1.5rem; font-weight: bold; }
-    #resultados {
-      margin-top: 1rem; text-align: left; max-width: 600px;
-      margin-left: auto; margin-right: auto;
-    }
-    .resultado {
-      background: #fff; margin-bottom: 10px; padding: 10px;
-      border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.1);
-    }
-    .titulo { font-weight: bold; }
-    .copiar {
-      margin-top: 5px; padding: 5px 10px; background-color: #007BFF;
-      color: white; border: none; border-radius: 6px; cursor: pointer;
-    }
-    .copiar:hover { background-color: #0056b3; }
 
-    /* Área PIX */
-    #pix-area {
-      margin-top: 2rem;
-      padding: 1.5rem;
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 0 8px rgba(0,0,0,0.1);
-      max-width: 700px;
+    header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    #logo {
+      max-width: 120px;
+      width: 30%;
+      margin-bottom: 0.5rem;
+    }
+
+    h2 {
+      font-size: 1.6rem;
+      margin: 0.5rem 0 1rem 0;
+    }
+
+    label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: bold;
+      text-align: left;
+      max-width: 400px;
       margin-left: auto;
       margin-right: auto;
     }
-    #pix-area h3 {
-      margin-top: 0;
-      margin-bottom: 1rem;
-      font-size: 1.4rem;
-      color: #333;
-    }
-    .pix-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1.5rem;
-      justify-content: center;
-      align-items: flex-start;
-    }
-    .pix-box {
-      flex: 1 1 280px;
-      text-align: center;
-    }
-    #qrcode {
-      margin: 0 auto 1rem auto;
-      width: 200px;
-      height: 200px;
-    }
-    textarea {
-      width: 100%;
-      height: 120px;
-      padding: 10px;
-      border-radius: 8px;
+
+    input[type="text"] {
+      width: 90%;
+      max-width: 400px;
+      padding: 12px;
+      font-size: 1rem;
+      margin-top: 0.5rem;
       border: 1px solid #ccc;
-      resize: none;
-      font-size: 0.9rem;
+      border-radius: 8px;
     }
-    .btn-copiar {
-      margin-top: 0.8rem;
+
+    button {
+      margin-top: 1rem;
       padding: 10px 20px;
-      background: #007BFF;
+      font-size: 1rem;
+      background-color: #25d366;
       color: white;
       border: none;
       border-radius: 8px;
       cursor: pointer;
-    }
-    .btn-copiar:hover { background: #0056b3; }
-
-    /* Logo de fundo */
-    #imagem-dj {
-      position: fixed;
-      bottom: -5%;
-      left: 50%;
-      transform: translateX(-50%);
-      opacity: 0.12;
-      max-width: 500px;
-      width: 70%;
-      z-index: 0;
-      pointer-events: none;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
     }
 
-    @media (max-width: 600px) {
-      h2 { font-size: 1.5rem; }
-      #qrcode { width: 180px; height: 180px; }
-      textarea { height: 100px; font-size: 0.85rem; }
-      #imagem-dj { max-width: 300px; width: 80%; opacity: 0.15; }
+    button:hover {
+      background-color: #1ebc5a;
+    }
+
+    #mensagem {
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+
+    #resultados {
+      margin-top: 1rem;
+      text-align: left;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .resultado {
+      background: #fff;
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+
+    .titulo {
+      font-weight: bold;
+    }
+
+    .copiar {
+      margin-top: 5px;
+      padding: 5px 10px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .copiar:hover {
+      background-color: #0056b3;
+    }
+
+    /* Seção de contribuição */
+    #contribuicao {
+      margin-top: 2rem;
+      padding: 1rem;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    #contribuicao h3 {
+      margin-bottom: 1rem;
+      font-size: 1.3rem;
+      color: #333;
+    }
+
+    #pix-qrcode {
+      margin: 1rem auto;
+      display: block;
+      max-width: 220px;
+      width: 100%;
+    }
+
+    .pix-texto {
+      margin-top: 0.5rem;
+      font-size: 0.95rem;
+      color: #444;
+    }
+
+    .pix-codigo {
+      margin-top: 1rem;
+      word-wrap: break-word;
+      font-size: 0.9rem;
+      background: #f9f9f9;
+      padding: 0.6rem;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+    }
+
+    .pix-btn {
+      margin-top: 0.8rem;
+      padding: 8px 16px;
+      font-size: 0.95rem;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .pix-btn:hover {
+      background-color: #0056b3;
     }
   </style>
 </head>
 <body>
-  <h2>Peça sua música!</h2>
+  <header>
+    <img src="dj.jpeg" alt="Logo DJ" id="logo">
+    <h2>Peça sua música!</h2>
+  </header>
 
   <label for="nome">Seu nome:</label>
   <input type="text" id="nome" placeholder="Digite seu nome" />
@@ -134,47 +180,25 @@
 
   <label for="link">Link da música (YouTube):</label>
   <input type="text" id="link" placeholder="https://youtube.com/..." />
-
   <button onclick="enviarPedido()">Enviar para o DJ</button>
 
   <div id="mensagem"></div>
 
-  <!-- Área PIX -->
-  <div id="pix-area">
-    <h3>Contribua com o DJ via PIX 🎵</h3>
-    <div class="pix-container">
-      <div class="pix-box">
-        <div id="qrcode"></div>
-        <p>Escaneie o QR Code no app do seu banco</p>
-      </div>
-      <div class="pix-box">
-        <p>Ou copie o código PIX abaixo:</p>
-        <textarea id="pix-code" readonly>00020126330014br.gov.bcb.pix0111498138461005204000053039865802BR5922Rubens Hiroyuki Kimura6009Sao Paulo610901227-20062220518daqr2283200690490563047BD7</textarea>
-        <button class="btn-copiar" onclick="copyPixCode()">Copiar código PIX</button>
-      </div>
+  <!-- Contribuição -->
+  <section id="contribuicao">
+    <h3>Contribua com o DJ</h3>
+    <p class="pix-texto">Escaneie o QR Code no app do seu banco:</p>
+    <img id="pix-qrcode" src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=00020126330014br.gov.bcb.pix0111498138461005204000053039865802BR5922Rubens%20Hiroyuki%20Kimura6009Sao%20Paulo610901227-20062220518daqr2283200690490563047BD7" alt="QR Code PIX">
+    
+    <p class="pix-texto">Ou copie o código PIX:</p>
+    <div class="pix-codigo" id="pix-codigo">
+      00020126330014br.gov.bcb.pix0111498138461005204000053039865802BR5922Rubens Hiroyuki Kimura6009Sao Paulo610901227-20062220518daqr2283200690490563047BD7
     </div>
-  </div>
+    <button class="pix-btn" onclick="copiarPix()">Copiar Código PIX</button>
+  </section>
 
-  <!-- Logo decorativa -->
-  <img src="dj.jpeg" alt="Logo DJ" id="imagem-dj" />
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script>
     const apiKey = "AIzaSyDa-i6Ztzb18TQer2Km29t2JKOTXd89t2g";
-    const pixPayload = "00020126330014br.gov.bcb.pix0111498138461005204000053039865802BR5922Rubens Hiroyuki Kimura6009Sao Paulo610901227-20062220518daqr2283200690490563047BD7";
-
-    new QRCode(document.getElementById("qrcode"), {
-      text: pixPayload,
-      width: 200,
-      height: 200
-    });
-
-    function copyPixCode() {
-      const textarea = document.getElementById("pix-code");
-      textarea.select();
-      document.execCommand("copy");
-      alert("Código PIX copiado!");
-    }
 
     function validarLink(link) {
       const padrao = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\//i;
@@ -192,7 +216,6 @@
       }
 
       const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=5&q=${encodeURIComponent(termo)}&key=${apiKey}`;
-
       try {
         const resposta = await fetch(url);
         const dados = await resposta.json();
@@ -245,7 +268,6 @@
       }
 
       const dados = { nome, link };
-
       try {
         const resposta = await fetch("https://servidorbackend-1.onrender.com/pedido", {
           method: "POST",
@@ -254,7 +276,6 @@
         });
 
         const json = await resposta.json();
-
         if (resposta.ok) {
           mensagemDiv.textContent = "Pedido enviado com sucesso!";
           mensagemDiv.style.color = "green";
@@ -267,13 +288,22 @@
           mensagemDiv.style.color = "red";
         }
       } catch (erro) {
-        mensagemDiv.textContent = "Não foi possivel enviar o pedido.";
+        mensagemDiv.textContent = "Não foi possível enviar o pedido.";
         mensagemDiv.style.color = "red";
       }
+    }
+
+    function copiarPix() {
+      const codigo = document.getElementById("pix-codigo").innerText;
+      navigator.clipboard.writeText(codigo).then(() => {
+        alert("Código PIX copiado!");
+      });
     }
   </script>
 </body>
 </html>
+
+
 
 
 
