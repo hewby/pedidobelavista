@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Peça sua Música</title>
+
   <style>
     body {
       margin: 0;
@@ -90,6 +91,7 @@
 
     .titulo {
       font-weight: bold;
+      margin-bottom: 8px;
     }
 
     .copiar {
@@ -106,7 +108,6 @@
       background-color: #0056b3;
     }
 
-    /* Seção de contribuição */
     #contribuicao {
       margin-top: 2rem;
       padding: 1rem;
@@ -163,7 +164,9 @@
     }
   </style>
 </head>
+
 <body>
+
   <header>
     <img src="dj.jpeg" alt="Logo DJ" id="logo">
     <h2>Peça sua música!</h2>
@@ -174,132 +177,270 @@
 
   <label for="busca">Buscar música no YouTube:</label>
   <input type="text" id="busca" placeholder="Digite o nome da música" />
-  <button onclick="buscarYoutube()">Buscar</button>
+
+  <button onclick="buscarYoutube()">
+    Buscar
+  </button>
 
   <div id="resultados"></div>
 
   <label for="link">Link da música (YouTube):</label>
-  <input type="text" id="link" placeholder="https://youtube.com/..." />
-  <button onclick="enviarPedido()">Enviar para o DJ</button>
+
+  <input
+    type="text"
+    id="link"
+    placeholder="https://youtube.com/..."
+  />
+
+  <button onclick="enviarPedido()">
+    Enviar para o DJ
+  </button>
 
   <div id="mensagem"></div>
 
-  <!-- Contribuição -->
   <section id="contribuicao">
+
     <h3>Considere contribuir com o DJ via PIX:</h3>
-    <p class="pix-texto">Escaneie o QR Code com outro dispositivo:</p>
-    <img id="pix-qrcode" src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=00020126330014br.gov.bcb.pix0111498138461005204000053039865802BR5922Rubens%20Hiroyuki%20Kimura6009Sao%20Paulo610901227-20062220518daqr2283200690490563047BD7" alt="QR Code PIX">
-    
-    <p class="pix-texto">Ou copie e cole o código PIX:</p>
+
+    <p class="pix-texto">
+      Escaneie o QR Code com outro dispositivo:
+    </p>
+
+    <img
+      id="pix-qrcode"
+      src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=00020126330014br.gov.bcb.pix0111498138461005204000053039865802BR5922Rubens%20Hiroyuki%20Kimura6009Sao%20Paulo610901227-20062220518daqr2283200690490563047BD7"
+      alt="QR Code PIX"
+    >
+
+    <p class="pix-texto">
+      Ou copie e cole o código PIX:
+    </p>
+
     <div class="pix-codigo" id="pix-codigo">
       00020126330014br.gov.bcb.pix0111498138461005204000053039865802BR5922Rubens Hiroyuki Kimura6009Sao Paulo610901227-20062220518daqr2283200690490563047BD7
     </div>
-    <button class="pix-btn" onclick="copiarPix()">Copiar Código PIX</button>
+
+    <button class="pix-btn" onclick="copiarPix()">
+      Copiar Código PIX
+    </button>
+
   </section>
 
   <script>
-    const apiKey = "AIzaSyDa-i6Ztzb18TQer2Km29t2JKOTXd89t2g";
+
+    const apiKey = "AIzaSyB3S8HuVu3v_-6m2iH3-RWS0YLquTDpX6Q";
 
     function validarLink(link) {
-      const padrao = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\//i;
+
+      const padrao =
+        /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\//i;
+
       return padrao.test(link);
     }
 
     async function buscarYoutube() {
-      const termo = document.getElementById("busca").value.trim();
-      const resultadosDiv = document.getElementById("resultados");
+
+      const termo =
+        document.getElementById("busca").value.trim();
+
+      const resultadosDiv =
+        document.getElementById("resultados");
+
       resultadosDiv.innerHTML = "";
 
       if (!termo) {
-        resultadosDiv.innerHTML = "<p>Digite algo para buscar.</p>";
+
+        resultadosDiv.innerHTML =
+          "<p>Digite algo para buscar.</p>";
+
         return;
       }
 
-      const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=5&q=${encodeURIComponent(termo)}&key=${apiKey}`;
+      const url =
+        `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=5&q=${encodeURIComponent(termo)}&key=${apiKey}`;
+
       try {
+
         const resposta = await fetch(url);
+
         const dados = await resposta.json();
 
-        if (dados.items.length === 0) {
-          resultadosDiv.innerHTML = "<p>Nenhum resultado encontrado.</p>";
+        console.log(dados);
+
+        if (!resposta.ok) {
+
+          resultadosDiv.innerHTML =
+            `<p>Erro da API: ${dados.error?.message || "Erro desconhecido"}</p>`;
+
+          return;
+        }
+
+        if (!dados.items || dados.items.length === 0) {
+
+          resultadosDiv.innerHTML =
+            "<p>Nenhum resultado encontrado.</p>";
+
           return;
         }
 
         dados.items.forEach(video => {
-          const videoId = video.id.videoId;
-          const titulo = video.snippet.title;
-          const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
 
-          const container = document.createElement("div");
+          const videoId = video.id.videoId;
+
+          const titulo = video.snippet.title;
+
+          const videoUrl =
+            `https://www.youtube.com/watch?v=${videoId}`;
+
+          const container =
+            document.createElement("div");
+
           container.className = "resultado";
 
-          const tituloElem = document.createElement("div");
+          const tituloElem =
+            document.createElement("div");
+
           tituloElem.className = "titulo";
+
           tituloElem.textContent = titulo;
 
-          const botao = document.createElement("button");
+          const botao =
+            document.createElement("button");
+
           botao.className = "copiar";
+
           botao.textContent = "Copiar Link";
+
           botao.onclick = () => {
-            document.getElementById("link").value = videoUrl;
-            document.getElementById("mensagem").textContent = "Link copiado!";
-            document.getElementById("mensagem").style.color = "green";
+
+            document.getElementById("link").value =
+              videoUrl;
+
+            document.getElementById("mensagem").textContent =
+              "Link copiado!";
+
+            document.getElementById("mensagem").style.color =
+              "green";
           };
 
           container.appendChild(tituloElem);
+
           container.appendChild(botao);
+
           resultadosDiv.appendChild(container);
+
         });
+
       } catch (erro) {
-        resultadosDiv.innerHTML = "<p>Erro ao buscar vídeos. Verifique sua conexão.</p>";
+
+        console.error(erro);
+
+        resultadosDiv.innerHTML =
+          "<p>Erro ao buscar vídeos.</p>";
       }
     }
 
     async function enviarPedido() {
-      const nome = document.getElementById("nome").value.trim();
-      const link = document.getElementById("link").value.trim();
-      const mensagemDiv = document.getElementById("mensagem");
+
+      const nome =
+        document.getElementById("nome").value.trim();
+
+      const link =
+        document.getElementById("link").value.trim();
+
+      const mensagemDiv =
+        document.getElementById("mensagem");
+
       mensagemDiv.textContent = "";
 
       if (!nome || !link) {
-        mensagemDiv.textContent = "Preencha todos os campos.";
+
+        mensagemDiv.textContent =
+          "Preencha todos os campos.";
+
         mensagemDiv.style.color = "red";
+
+        return;
+      }
+
+      if (!validarLink(link)) {
+
+        mensagemDiv.textContent =
+          "Digite um link válido do YouTube.";
+
+        mensagemDiv.style.color = "red";
+
         return;
       }
 
       const dados = { nome, link };
+
       try {
-        const resposta = await fetch("https://servidorbackend-1.onrender.com/pedido", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(dados)
-        });
+
+        const resposta = await fetch(
+          "https://servidorbackend-1.onrender.com/pedido",
+          {
+            method: "POST",
+
+            headers: {
+              "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify(dados)
+          }
+        );
 
         const json = await resposta.json();
+
         if (resposta.ok) {
-          mensagemDiv.textContent = "Pedido enviado com sucesso!";
+
+          mensagemDiv.textContent =
+            "Pedido enviado com sucesso!";
+
           mensagemDiv.style.color = "green";
+
           document.getElementById("nome").value = "";
+
           document.getElementById("link").value = "";
+
           document.getElementById("busca").value = "";
+
           document.getElementById("resultados").innerHTML = "";
+
         } else {
-          mensagemDiv.textContent = json.mensagem || "Erro ao enviar pedido.";
+
+          mensagemDiv.textContent =
+            json.mensagem || "Erro ao enviar pedido.";
+
           mensagemDiv.style.color = "red";
         }
+
       } catch (erro) {
-        mensagemDiv.textContent = "Não foi possível enviar o pedido.";
+
+        console.error(erro);
+
+        mensagemDiv.textContent =
+          "Não foi possível enviar o pedido.";
+
         mensagemDiv.style.color = "red";
       }
     }
 
     function copiarPix() {
-      const codigo = document.getElementById("pix-codigo").innerText;
-      navigator.clipboard.writeText(codigo).then(() => {
-        alert("Código PIX copiado!");
-      });
+
+      const codigo =
+        document.getElementById("pix-codigo").innerText;
+
+      navigator.clipboard.writeText(codigo)
+        .then(() => {
+
+          alert("Código PIX copiado!");
+
+        });
     }
+
   </script>
+
 </body>
 </html>
 
